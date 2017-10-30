@@ -69,22 +69,9 @@ class MessageThread(threading.Thread):
                 self.bot.send_message(
                     chat_id=user_data["telegram_id"], text=message, parse_mode=ParseMode.HTML)
             except Unauthorized:
-                print("Test")
                 user_data["is_active"] = False
                 FileHandler.save_json(
                     data=user_data, path="resources/userdata/" + filename)
-            except BadRequest:
-                # handle malformed requests - read more below!
-                pass
-            except TimedOut:
-                # handle slow connection problems
-                pass
-            except NetworkError:
-                # handle other connection problems
-                pass
-            except ChatMigrated as e:
-                # the chat_id of a group has changed, use e.new_chat_id instead
-                pass
             except TelegramError:
                 # handle all other telegram related errors
                 pass
