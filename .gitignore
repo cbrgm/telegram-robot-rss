@@ -1,0 +1,3 @@
+resources/credentials.json
+resources/userdata/*
+*.pyc
