@@ -25,6 +25,7 @@ class rssbot(object):
         self.dispatcher.add_handler(CommandHandler("stop", self.stop))
         self.dispatcher.add_handler(CommandHandler("help", self.help))
         self.dispatcher.add_handler(CommandHandler("list", self.list))
+        self.dispatcher.add_handler(CommandHandler("about", self.about))
         self.dispatcher.add_handler(
             CommandHandler("add", self.add, pass_args=True))
         self.dispatcher.add_handler(
@@ -73,12 +74,14 @@ class rssbot(object):
 
         if pattern.match(args[0]) and len(args) == 2:
 
-            data = self.__load_user_data(update)
+            data = FileHandler.load_json(
+                path="resources/userdata/" + str(update.message.from_user.id) + ".json")
 
             if str(args[1]) not in data["subscriptions"]:
                 new_item = {args[1]: args[0]}
                 data["subscriptions"].update(new_item)
-                self.__save_user_data(update, data)
+                FileHandler.save_json(
+                    data=data, path="resources/userdata/" + str(update.message.from_user.id) + ".json")
                 update.message.reply_text("I added " + str(
                     args[1]) + " to your subscriptions!")
             else:
@@ -92,12 +95,14 @@ class rssbot(object):
         """Removes an rss subscription from user"""
 
         if len(args) == 1:
-            data = self.__load_user_data(update)
+            data = FileHandler.load_json(
+                path="resources/userdata/" + str(update.message.from_user.id) + ".json")
             if args[0] in data["subscriptions"]:
                 del data["subscriptions"][args[0]]
                 update.message.reply_text(
                     "I removed " + args[0] + " from your subscriptions!")
-                self.__save_user_data(update, data)
+                FileHandler.save_json(
+                    data=data, path="resources/userdata/" + str(update.message.from_user.id) + ".json")
             else:
                 update.message.reply_text(
                     "I can not find an entry with label " + args[0] + " in your subscriptions! Please check your subscriptions using /list and use the delete command again!")
@@ -110,7 +115,8 @@ class rssbot(object):
         update.message.reply_text(
             "Here is a list of all subscriptions I stored for you!")
 
-        data = self.__load_user_data(update)
+        data = FileHandler.load_json(
+            path="resources/userdata/" + str(update.message.from_user.id) + ".json")
 
         string = ""
         for key in data["subscriptions"]:
@@ -138,9 +144,9 @@ class rssbot(object):
         update.message.reply_text(
             "Oh.. Okay, I will not send you any more news updates! If you change your mind and you want to receive messages from me again use /start command again!")
 
-    def error(self, bot, update, error):
-        """Log Errors caused by Updates."""
-        print("Something went wrong!")
+    def about(self, bot, update):
+        message = "Thank you for using <b>Blue RSS</b>! \n\n If you like the bot, please recommend it to others! \n\nDo you have problems, ideas or suggestions about what the bot should be able to do? Then contact my developer <a href='http://cbrgm.de'>@cbrgm</a> or create an issue on <a href='https://github.com/cbrgm/bluerss-telegrambot'>Github</a>. There you will also find my source code, if you are interested in how I work!"
+        update.message.reply_text(message, parse_mode=ParseMode.HTML)
 
     def __setup_user_data(self, update):
         userdata = {}
@@ -150,14 +156,6 @@ class rssbot(object):
         userdata["is_active"] = True
         userdata["subscriptions"] = {}
 
-        self.__save_user_data(update, userdata)
-
-    def __load_user_data(self, update):
-        data = FileHandler.load_json(
-            path="resources/userdata/" + str(update.message.from_user.id) + ".json")
-        return data
-
-    def __save_user_data(self, update, data):
         FileHandler.save_json(
             data=data, path="resources/userdata/" + str(update.message.from_user.id) + ".json")
 
