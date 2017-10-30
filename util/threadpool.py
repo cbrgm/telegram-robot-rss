@@ -13,7 +13,7 @@ import datetime
 from time import sleep
 
 
-class MessageThread(threading.Thread):
+class BatchThreadPool(threading.Thread):
 
     def __init__(self, update_interval, bot):
         Thread.__init__(self)

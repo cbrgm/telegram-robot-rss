@@ -5,7 +5,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from telegram import ParseMode
 from util.filehandler import FileHandler
 from util.datehandler import DateHandler
-from util.messagethread import MessageThread
+from util.threadpool import BatchThreadPool
 from emoji import emojize
 import feedparser
 import re
@@ -34,7 +34,7 @@ class rssbot(object):
         self.dispatcher.add_handler(MessageHandler(Filters.text, self.echo))
 
         # Start the Bot
-        feed_updater = MessageThread(
+        feed_updater = BatchThreadPool(
             update_interval=30, bot=self.dispatcher.bot)
         feed_updater.start()
 
