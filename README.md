@@ -8,6 +8,16 @@ Blue RSS RSS is an RSS Bot for the Telegram Messenger. Subscribe to different ne
 
 Blue RSS has an easy-to-use user interface to get started. Write the @bluerssbot via telegram. Use the following commands to manage your subscriptions:
 
+* Controls
+  - `/start` - Activates the bot. If you have subscribed to RSS feeds, you will receive news from now on
+  - `/stop` - Deactivates the bot. You won't receive any messages from the bot until you activate the bot again using the start comand
+* RSS Management
+  - `/add <url> <entryname>` - Adds a new subscription to your list.
+  - `/remove <entryname>` - Removes an exisiting subscription from your list.
+  - `/list` - Shows all your subscriptions as a list.
+* Other
+  - `/about` - Shows some information about BlueRSS Bot
+
 ## Feature Request and Contributing
 
 ## Installation
