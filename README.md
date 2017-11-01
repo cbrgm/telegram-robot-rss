@@ -6,7 +6,11 @@
 
 Blue RSS RSS is an RSS Bot for the Telegram Messenger. Subscribe to different news channels and stay up-to-date. Receive instant messages in your Messenger app when websites are updated, e. g. on news pages, blogs or audio/video logs.
 
-Blue RSS has an easy-to-use user interface to get started. Write the @bluerssbot via telegram. Use the following commands to manage your subscriptions:
+### Usage
+
+Blue RSS has an easy-to-use user interface to get started. Write the [@bluerssbot][2f7e3ad7] via telegram. Use the following commands to manage your subscriptions:
+
+  [2f7e3ad7]: https://telegram.me/bluerssbot "BlueRSS"
 
 **Controls**  
 `/start` - Activates the bot. If you have subscribed to RSS feeds, you will receive news from now on  
@@ -21,6 +25,12 @@ Blue RSS has an easy-to-use user interface to get started. Write the @bluerssbot
 `/about` - Shows some information about BlueRSS Bot  
 
 ## Feature Request and Contributing
+
+You have suggestions for improvements or features you miss? You are welcome to express all your wishes here. Just create a new [Issue][e872f832] and it will be taken care of quickly!
+
+  [e872f832]: https://github.com/cbrgm/bluerss-telegrambot/issues "BlueRSS Issues"
+
+If you are a developer yourself, you can also contribute code! Further information will follow shortly.
 
 ## Installation
 
