@@ -2,7 +2,6 @@ certifi==2017.7.27.1
 emoji==0.4.5
 feedparser==5.2.1
 future==0.16.0
-pkg-resources==0.0.0
 python-dateutil==2.6.1
 python-telegram-bot==8.1.1
 pytz==2017.2
