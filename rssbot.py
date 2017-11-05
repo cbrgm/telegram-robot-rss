@@ -121,7 +121,7 @@ class rssbot(object):
         string = ""
         for key in data["subscriptions"]:
             string = string + \
-                ("[ " + key + "]\n " +
+                ("[" + key + "]\n " +
                  data["subscriptions"][key] + "\n\n")
 
         update.message.reply_text(string)
