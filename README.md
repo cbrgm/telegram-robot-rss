@@ -40,14 +40,40 @@ The source code of BlueRSS is Open Source and openly accessible and editable. If
 
 ### Create a credentials file
 
+First, you must tell BlueRSS which bot the service is allowed to communicate with. Create a new telegram bot or use an existing one. All you need is the Bot's `Token` from Telegram. You can receive one from Telegrams [Botfather][db6676cf].
+
+Edit the `sample-credentials.json` file located at `/resources/sample-credentials.json`.
+
+```json
+{
+  "telegram_token": "INSERT TOKEN"
+}
+```
+
+Insert your token and safe the file as **`credentials.json`** at `/resources/credentials.json`!
+
+  [db6676cf]: tg://resolve?domain=BotFather "Botfather"
+
 ### Install Dependencies using pip
+
+You can easily install all needed Dependencies using `pip`. Navigate into the project directory and run `pip install -r requirements.txt`. If you prefer installing all Dependencies manually you can find a detailed list of all needed packages at the "Dependencies" Section at the bottom of the page.
 
 ### Create a Docker Image
 
+You can easily run BlueRSS inside a Docker Container. The Dockerfile can be found in the project directory. Run `docker build --tag "bluerss:latest" .` to create a new Docker Image based on the current code.
+
+You can also pull the latest image from Dockerhub using `docker pull cynthek/bluerss:latest`.
+
 ## Python Version
+
+BlueRSS has been successfully tested with Python 2.7
 
 ## Dependencies
 
-## Licence
+All Dependencies can be found in the `requirements.txt` file in the project directory.
 
 ## Motivation
+
+This script was originally developed by [Christian Bargmann][b9824663] for practice purposes with Python.
+
+  [b9824663]: http://cbrgm.de "blog"

@@ -35,7 +35,7 @@ class rssbot(object):
 
         # Start the Bot
         feed_updater = BatchThreadPool(
-            update_interval=30, bot=self.dispatcher.bot)
+            update_interval=300, bot=self.dispatcher.bot)
         feed_updater.start()
 
         self.updater.start_polling()
