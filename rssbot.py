@@ -136,6 +136,7 @@ class rssbot(object):
         update.message.reply_text(update.message.text)
 
     def stop(self, bot, update):
+        """Stops the bot from working"""
         data = FileHandler.load_json(
             path="resources/userdata/" + str(update.message.from_user.id) + ".json")
         data["is_active"] = False
