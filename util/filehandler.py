@@ -13,27 +13,17 @@ class FileHandler(object):
         """Loads a json file and returns the content as a dictionary"""
         filepath = os.path.join(FileHandler.base_path, '..', path)
 
-        lock = Lock()
-        lock.acquire()
-        try:
-            with open(filepath) as jsonfile:
-                data = json.load(jsonfile)
-            return data
-        finally:
-            lock.release()
+        with open(filepath) as jsonfile:
+            data = json.load(jsonfile)
+        return data
 
     @staticmethod
     def save_json(data, path):
         """Stores string json data to a json file at given path"""
         filepath = os.path.join(FileHandler.base_path, '..', path)
 
-        lock = Lock()
-        lock.acquire()
-        try:
-            with open(filepath, 'w+') as outfile:
-                json.dump(data, outfile)
-        finally:
-            lock.release()
+        with open(filepath, 'w+') as outfile:
+            json.dump(data, outfile)
 
     @staticmethod
     def load_file(path):
@@ -45,17 +35,21 @@ class FileHandler(object):
         return data
 
     @staticmethod
+    def save_file(data, path):
+        """Loads a json file and returns the content as a dictionary"""
+        filepath = os.path.join(FileHandler.base_path, '..', path)
+
+        with open(filepath, "w+") as file:
+            data = file.write(str(data))
+        return data
+
+    @staticmethod
     def object2json(object, path):
         """Stores object values to a json file at given path"""
         filepath = os.path.join(FileHandler.base_path, '..', path)
 
-        lock = Lock()
-        lock.acquire()
-        try:
-            with open(filepath, 'w+') as outfile:
-                json.dump(object.__dict__, outfile)
-        finally:
-            lock.release()
+        with open(filepath, 'w+') as outfile:
+            json.dump(object.__dict__, outfile)
 
     @staticmethod
     def file_exists(path):
