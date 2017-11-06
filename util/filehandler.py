@@ -36,6 +36,15 @@ class FileHandler(object):
             lock.release()
 
     @staticmethod
+    def load_file(path):
+        """Loads a json file and returns the content as a dictionary"""
+        filepath = os.path.join(FileHandler.base_path, '..', path)
+
+        with open(filepath, "r") as file:
+            data = file.read()
+        return data
+
+    @staticmethod
     def object2json(object, path):
         """Stores object values to a json file at given path"""
         filepath = os.path.join(FileHandler.base_path, '..', path)
