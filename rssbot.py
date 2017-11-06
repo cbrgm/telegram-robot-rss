@@ -158,7 +158,7 @@ class rssbot(object):
         userdata["subscriptions"] = {}
 
         FileHandler.save_json(
-            data=data, path="resources/userdata/" + str(update.message.from_user.id) + ".json")
+            data=userdata, path="resources/userdata/" + str(update.message.from_user.id) + ".json")
 
 
 if __name__ == '__main__':
