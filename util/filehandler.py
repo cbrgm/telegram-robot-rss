@@ -27,7 +27,7 @@ class FileHandler(object):
 
     @staticmethod
     def load_file(path):
-        """Loads a json file and returns the content as a dictionary"""
+        """Loads a file and returns the content as string"""
         filepath = os.path.join(FileHandler.base_path, '..', path)
 
         with open(filepath, "r") as file:
@@ -36,7 +36,7 @@ class FileHandler(object):
 
     @staticmethod
     def save_file(data, path):
-        """Loads a json file and returns the content as a dictionary"""
+        """Stores string data to a file at given path"""
         filepath = os.path.join(FileHandler.base_path, '..', path)
 
         with open(filepath, "w+") as file:
