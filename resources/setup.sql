@@ -1,6 +1,6 @@
 CREATE TABLE web (
-	url_id integer PRIMARY KEY AUTOINCREMENT,
-	url varchar NOT NULL UNIQUE
+	url varchar PRIMARY KEY NOT NULL UNIQUE,
+	last_updated timestamp
 );
 
 CREATE TABLE user (
@@ -9,14 +9,15 @@ CREATE TABLE user (
 	firstname varchar NOT NULL,
 	lastname varchar NOT NULL,
 	language varchar,
-	is_bot integer
+	is_bot integer,
+	is_active
 );
 
 CREATE TABLE web_user (
-	url_id integer NOT NULL,
+	url varchar NOT NULL,
 	telegram_id integer NOT NULL,
 	alias varchar NOT NULL,
-	PRIMARY KEY ( url_id, telegram_id)
+	PRIMARY KEY (url, telegram_id),
+	FOREIGN KEY(url) REFERENCES web(url),
+	FOREIGN KEY(telegram_id) REFERENCES user(telegram_id)
 );
-
-CREATE INDEX index_web_url ON web (url);
