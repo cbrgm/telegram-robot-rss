@@ -4,13 +4,13 @@ CREATE TABLE web (
 );
 
 CREATE TABLE user (
-	telegram_id integer PRIMARY KEY NOT NULL,
-	username varchar NOT NULL,
+	telegram_id integer PRIMARY KEY NOT NULL UNIQUE,
+	username varchar,
 	firstname varchar NOT NULL,
-	lastname varchar NOT NULL,
+	lastname varchar,
 	language varchar,
-	is_bot integer,
-	is_active
+	is_bot integer NOT NULL,
+	is_active integer NOT NULL
 );
 
 CREATE TABLE web_user (
