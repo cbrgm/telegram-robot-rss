@@ -1,5 +1,6 @@
 import sqlite3
-from util.filehandler import FileHandler as fh
+from util.filehandler import FileHandler
+from util.datehandler import DateHandler as dh
 
 
 class DatabaseHandler(object):
@@ -7,9 +8,10 @@ class DatabaseHandler(object):
     def __init__(self, database_path):
 
         self.database_path = database_path
+        self.filehandler = FileHandler(relative_root_path="..")
 
-        if not fh.file_exists(self.database_path):
-            sql_command = fh.load_file("resources/setup.sql")
+        if not self.filehandler.file_exists(self.database_path):
+            sql_command = self.filehandler.load_file("resources/setup.sql")
 
             conn = sqlite3.connect(self.database_path)
             cursor = conn.cursor()
@@ -17,7 +19,7 @@ class DatabaseHandler(object):
             conn.commit()
             conn.close()
 
-    def add_user(self, telegram_id, username, firstname, lastname, language_code, is_bot):
+    def add_user(self, telegram_id, username, firstname, lastname, language_code, is_bot, is_active):
         """Adds a user to sqlite database
 
         Args:
@@ -32,8 +34,8 @@ class DatabaseHandler(object):
         conn = sqlite3.connect(self.database_path)
         cursor = conn.cursor()
 
-        cursor.execute("INSERT OR IGNORE INTO user VALUES (?,?,?,?,?,?)",
-                       (telegram_id, username, firstname, lastname, language_code, is_bot))
+        cursor.execute("INSERT OR IGNORE INTO user VALUES (?,?,?,?,?,?,?)",
+                       (telegram_id, username, firstname, lastname, language_code, is_bot, is_active))
 
         conn.commit()
         conn.close()
@@ -102,8 +104,8 @@ class DatabaseHandler(object):
         conn = sqlite3.connect(self.database_path)
         cursor = conn.cursor()
 
-        cursor.execute("INSERT OR IGNORE INTO web (url) VALUES (?)",
-                       (url,))
+        cursor.execute("INSERT OR IGNORE INTO web (url, last_updated) VALUES (?,?)",
+                       (url, dh.get_datetime_now()))
 
         conn.commit()
         conn.close()
@@ -112,14 +114,16 @@ class DatabaseHandler(object):
         conn = sqlite3.connect(self.database_path)
         cursor = conn.cursor()
 
-        sql_command = "DELETE FROM web WHERE url='" + str(url) + "';"
+        sql_command = "DELETE FROM web_user WHERE url='" + str(url) + "';"
+        cursor.execute(sql_command)
 
+        sql_command = "DELETE FROM web WHERE web.url NOT IN (SELECT web_user.url from web_user)"
         cursor.execute(sql_command)
 
         conn.commit()
         conn.close()
 
-    def update_url(self, url_id, **kwargs):
+    def update_url(self, url, **kwargs):
         conn = sqlite3.connect(self.database_path)
         cursor = conn.cursor()
 
@@ -128,9 +132,9 @@ class DatabaseHandler(object):
             sql_command = sql_command + \
                 str(key) + "='" + str(kwargs[key]) + "', "
         if len(kwargs) == 0:
-            sql_command = sql_command + " WHERE url=" + str(url)
+            sql_command = sql_command + " WHERE url='" + str(url) + "';"
         else:
-            sql_command = sql_command[:-2] + " WHERE url_id=" + str(url_id)
+            sql_command = sql_command[:-2] + " WHERE url='" + str(url) + "';"
 
         cursor.execute(sql_command)
 
@@ -156,10 +160,30 @@ class DatabaseHandler(object):
         cursor = conn.cursor()
 
         self.add_url(url)  # add if not exists
-        url_entry = self.get_url(url)
-
         cursor.execute("INSERT OR IGNORE INTO web_user VALUES (?,?,?)",
-                       (url_entry[0], telegram_id, alias))
+                       (url, telegram_id, alias))
+
+        conn.commit()
+        conn.close()
+
+    def remove_user_bookmark(self, telegram_id, url):
+        conn = sqlite3.connect(self.database_path)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "DELETE FROM web_user WHERE telegram_id=(?) AND url = (?)", (telegram_id, url))
+        cursor.execute(
+            "DELETE FROM web WHERE web.url NOT IN (SELECT web_user.url from web_user)")
+
+        conn.commit()
+        conn.close()
+
+    def update_user_bookmark(self, telegram_id, url, alias):
+        conn = sqlite3.connect(self.database_path)
+        cursor = conn.cursor()
+
+        cursor.execute("UPDATE web_user SET alias=(?) WHERE telegram_id=(?) AND url=(?)",
+                       (alias, telegram_id, url))
 
         conn.commit()
         conn.close()
@@ -169,7 +193,8 @@ class DatabaseHandler(object):
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT web.url_id, web.url, web_user.alias FROM web, web_user WHERE web_user.url_id = web.url_id AND web_user.telegram_id =" + str(telegram_id))
+            "SELECT web.url, web_user.alias, web.last_updated FROM web, web_user WHERE web_user.url = web.url AND web_user.telegram_id =" +
+            str(telegram_id) + ";")
 
         result = cursor.fetchall()
 
@@ -178,12 +203,12 @@ class DatabaseHandler(object):
 
         return result
 
-    def get_users_for_url(self, url_id):
+    def get_users_for_url(self, url):
         conn = sqlite3.connect(self.database_path)
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT user.* FROM user, web_user WHERE web_user.telegram_id = user.telegram_id AND web_user.url_id =" + str(url_id))
+            "SELECT user.* FROM user, web_user WHERE web_user.telegram_id = user.telegram_id AND web_user.url ='" + str(url) + "';")
         result = cursor.fetchall()
 
         conn.commit()
