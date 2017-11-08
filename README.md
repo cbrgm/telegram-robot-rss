@@ -44,7 +44,8 @@ Edit the `sample-credentials.json` file located at `/resources/sample-credential
 
 ```json
 {
-  "telegram_token": "INSERT TOKEN"
+  "telegram_token": "INSERT TOKEN",
+  "update_interval": 300
 }
 ```
 
