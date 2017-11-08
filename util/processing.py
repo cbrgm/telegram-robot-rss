@@ -1,0 +1,90 @@
+# /bin/bash/python/
+
+from telegram.error import (TelegramError, Unauthorized)
+from telegram import ParseMode
+from multiprocessing.dummy import Pool as ThreadPool
+from threading import Thread
+from util.datehandler import DateHandler
+from util.database import DatabaseHandler
+from dateutil import parser as DateParser
+import feedparser
+import datetime
+import threading
+from time import sleep
+
+
+class BatchProcess(threading.Thread):
+
+    def __init__(self, database, update_interval, bot):
+        Thread.__init__(self)
+        self.db = database
+        self.update_interval = update_interval
+        self.bot = bot
+        self.running = True
+
+    def run(self):
+        """
+        Starts the BatchThreadPool
+        """
+
+        while self.running:
+            # Init workload queue, add queue to ThreadPool
+            url_queue = self.db.get_all_urls()
+            self.parse_parallel(queue=url_queue, threads=4)
+
+            # Sleep for interval
+            sleep(self.update_interval)
+
+    def parse_parallel(self, queue, threads):
+        time_started = datetime.datetime.now()
+
+        pool = ThreadPool(threads)
+        pool.map(self.update_feed, queue)
+        pool.close()
+        pool.join()
+
+        time_ended = datetime.datetime.now()
+        duration = time_ended - time_started
+        print("Finished updating! Parsed " + str(len(queue)) +
+              " rss feeds in " + str(duration) + " !")
+
+    def update_feed(self, url):
+        telegram_users = self.db.get_users_for_url(url=url[0])
+
+        for user in telegram_users:
+            if user[6]:  # is_active
+                try:
+                    news_feed = feedparser.parse(url[0])
+                    for post in news_feed.entries:
+                        self.send_newest_messages(
+                            url=url, post=post, telegram_id=user[0])
+                except:
+                    message = "Something went wrong when I tried to parse the URL: \n\n " + \
+                        url[0] + "\n\nCould you please check that for me? Remove the url from your subscriptions using the /remove command, it seems like it does not work anymore!"
+                    self.bot.send_message(
+                        chat_id=user[0], text=message, parse_mode=ParseMode.HTML)
+
+        self.db.update_url(url=url[0], last_updated=str(
+            DateHandler.get_datetime_now()))
+
+    def send_newest_messages(self, url, post, telegram_id):
+        post_update_date = DateParser.parse(post.updated)
+        url_update_date = DateParser.parse(url[1])
+
+        print(post_update_date)
+        print(url_update_date)
+
+        if post_update_date > url_update_date:
+            message = "<a href='" + post.link + \
+                "'>" + post.title + "</a>"
+            try:
+                self.bot.send_message(
+                    chat_id=telegram_id, text=message, parse_mode=ParseMode.HTML)
+            except Unauthorized:
+                self.db.update_user(telegram_id=telegram_id, is_active=0)
+            except TelegramError:
+                # handle all other telegram related errors
+                pass
+
+    def set_running(self, running):
+        self.running = running

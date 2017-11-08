@@ -4,9 +4,14 @@ import json
 
 class FileHandler(object):
 
-    def __init__(self, relative_root_path):
-        self.base_path = os.path.abspath(
-            os.path.dirname(__file__)) + "/" + relative_root_path + "/"
+    def __init__(self, relative_root_path=None):
+
+        if relative_root_path is not None:
+            self.base_path = os.path.abspath(
+                os.path.dirname(__file__)) + "/" + relative_root_path + "/"
+        else:
+            self.base_path = os.path.abspath(
+                os.path.dirname(__file__))
 
     def load_json(self, path):
         """Loads a json file and returns the content as a dictionary"""

@@ -17,7 +17,6 @@ CREATE TABLE web_user (
 	url varchar NOT NULL,
 	telegram_id integer NOT NULL,
 	alias varchar NOT NULL,
-	PRIMARY KEY (url, telegram_id),
 	FOREIGN KEY(url) REFERENCES web(url),
 	FOREIGN KEY(telegram_id) REFERENCES user(telegram_id)
 );

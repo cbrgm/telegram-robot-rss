@@ -155,6 +155,20 @@ class DatabaseHandler(object):
 
         return result
 
+    def get_all_urls(self, ):
+        conn = sqlite3.connect(self.database_path)
+        cursor = conn.cursor()
+
+        sql_command = "SELECT * FROM web;"
+
+        cursor.execute(sql_command)
+        result = cursor.fetchall()
+
+        conn.commit()
+        conn.close()
+
+        return result
+
     def add_user_bookmark(self, telegram_id, url, alias):
         conn = sqlite3.connect(self.database_path)
         cursor = conn.cursor()
@@ -187,6 +201,21 @@ class DatabaseHandler(object):
 
         conn.commit()
         conn.close()
+
+    def get_user_bookmark(self, telegram_id, alias):
+        conn = sqlite3.connect(self.database_path)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT web.url, web_user.alias, web.last_updated FROM web, web_user WHERE web_user.url = web.url AND web_user.telegram_id =" +
+            str(telegram_id) + " AND web_user.alias ='" + str(alias) + "';")
+
+        result = cursor.fetchone()
+
+        conn.commit()
+        conn.close()
+
+        return result
 
     def get_urls_for_user(self, telegram_id):
         conn = sqlite3.connect(self.database_path)

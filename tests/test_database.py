@@ -184,6 +184,16 @@ class TestDatabaseHandler(unittest.TestCase):
         self.assertEqual(result[1][1], "TestDummy02")
         self.assertEqual(result[2][1], "TestDummy03")
 
+    def test_get_user_bookmark(self):
+        self.db.add_user(telegram_id=25525, username="TestDummy",
+                         firstname="John", lastname="Snow", language_code="DE", is_bot=False, is_active=True)
+        self.db.add_user_bookmark(
+            url="https://lorem-rss.herokuapp.com/feed", telegram_id=25525, alias="Test")
+
+        bookmark = self.db.get_user_bookmark(telegram_id=25525, alias="Test")
+        self.assertEqual(bookmark[0], "https://lorem-rss.herokuapp.com/feed")
+        self.assertEqual(bookmark[1], "Test")
+
     def test_remove_if_not_referenced(self):
         self.db.add_url(url="https://lorem-rss.herokuapp.com/feed")
         self.db.add_user(telegram_id=25525, username="TestDummy01",
