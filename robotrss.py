@@ -6,6 +6,7 @@ from telegram import ParseMode
 from util.filehandler import FileHandler
 from util.database import DatabaseHandler
 from util.processing import BatchProcess
+import feedparser
 
 
 class RobotRss(object):
@@ -83,17 +84,29 @@ class RobotRss(object):
             return
 
         # Check if argument matches url format
+        try:
+            news_feed = feedparser.parse(args[0])
+            if not news_feed.entries:
+                raise Exception('URL not parsable')
+            for post in news_feed.entries:
+                if not hasattr(post, "updated"):
+                    raise Exception('URL not parsable')
+        except:
+            message = "Sorry! It seems like '" + \
+                str(args[0]) + "' doesn't provide an RSS news feed.. Have you tried another URL from that provider? \n\nPlease remember, that I only accept URLs in with format: \nhttp(s)://site.name \nMaybe you gave me a 'www.'..?"
+            update.message.reply_text(message)
+            return
 
         # Check if entry does not exists
         entries = self.db.get_urls_for_user(telegram_id=telegram_user.id)
 
-        if any(args[0].lower() in entry for entry in entries):
+        if any(args[0].lower() in entry[0] for entry in entries):
             message = "Sorry, " + telegram_user.first_name + \
                 "! I already have that url with stored in your subscriptions."
             update.message.reply_text(message)
             return
 
-        if any(args[1] in entry for entry in entries):
+        if any(args[1] in entry[1] for entry in entries):
             message = "Sorry! I already have an entry with name " + \
                 args[1] + " stored in your subscriptions.. Please choose another entry name or delete the entry using '/remove " + args[1] + "'"
             update.message.reply_text(message)
