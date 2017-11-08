@@ -1,4 +1,5 @@
 resources/credentials.json
 resources/userdata/*
 *.pyc
+*.db
 !resources/sample-credentials.json
