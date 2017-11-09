@@ -3,6 +3,10 @@ import json
 
 
 def main():
+    """
+    Creates a config file using docker environment variables
+    """
+
     # Create Config
     telegram_bot_token = os.environ["BOT_TOKEN"]
     update_interval = os.environ["UPDATE_INTERVAL"]
