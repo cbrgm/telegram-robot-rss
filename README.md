@@ -66,7 +66,7 @@ You can also pull the latest image from Dockerhub using `docker pull cynthek/Rob
 
 ## Python Version
 
-RobotRSS has been successfully tested with Python 2.7
+RobotRSS has been successfully tested with Python 2.7 .
 
 ## Dependencies
 
