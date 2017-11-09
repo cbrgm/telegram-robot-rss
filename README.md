@@ -23,6 +23,7 @@ RobotRSS has an easy-to-use user interface to get started. Write the **official 
 
 **Other**  
 `/about` - Shows some information about RobotRSS Bot  
+`/help` - Shows the help menue
 
 ## Feature Request and Contributing
 
@@ -65,7 +66,7 @@ You can also pull the latest image from Dockerhub using `docker pull cynthek/Rob
 
 ## Python Version
 
-RobotRSS has been successfully tested with Python 2.7
+RobotRSS has been successfully tested with Python 2.7 .
 
 ## Dependencies
 
