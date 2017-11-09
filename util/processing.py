@@ -18,7 +18,7 @@ class BatchProcess(threading.Thread):
     def __init__(self, database, update_interval, bot):
         Thread.__init__(self)
         self.db = database
-        self.update_interval = update_interval
+        self.update_interval = float(update_interval)
         self.bot = bot
         self.running = True
 
@@ -70,9 +70,6 @@ class BatchProcess(threading.Thread):
     def send_newest_messages(self, url, post, telegram_id):
         post_update_date = DateParser.parse(post.updated)
         url_update_date = DateParser.parse(url[1])
-
-        print(post_update_date)
-        print(url_update_date)
 
         if post_update_date > url_update_date:
             message = "<a href='" + post.link + \

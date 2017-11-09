@@ -1,6 +1,6 @@
 # RobotRSS - A Telegram RSS Bot
 
-![RobotRSS Logo](logo/logo_title.png)
+![RobotRss Logo](logo/text/robotrss_logo_text_512.png)
 
 ## Description
 
@@ -8,7 +8,7 @@ RobotRSS is an RSS Bot for the Telegram Messenger. Subscribe to different news c
 
 ### Usage
 
-RobotRSS has an easy-to-use user interface to get started. Write the [@RobotRssbot][2f7e3ad7] via telegram. Use the following commands to manage your subscriptions:
+RobotRSS has an easy-to-use user interface to get started. Write the **official [@RobotRssBot][2f7e3ad7]** via telegram. Use the following commands to manage your subscriptions:
 
 [2f7e3ad7]: https://telegram.me/RobotRssBot "RobotRSS"
 
