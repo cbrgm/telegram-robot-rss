@@ -23,6 +23,7 @@ RobotRSS has an easy-to-use user interface to get started. Write the **official 
 
 **Other**  
 `/about` - Shows some information about RobotRSS Bot  
+`/help` - Shows the help menue
 
 ## Feature Request and Contributing
 
