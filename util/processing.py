@@ -6,7 +6,6 @@ from multiprocessing.dummy import Pool as ThreadPool
 from threading import Thread
 from util.datehandler import DateHandler
 from util.database import DatabaseHandler
-from dateutil import parser as DateParser
 import feedparser
 import datetime
 import threading
@@ -68,8 +67,11 @@ class BatchProcess(threading.Thread):
             DateHandler.get_datetime_now()))
 
     def send_newest_messages(self, url, post, telegram_id):
-        post_update_date = DateParser.parse(post.updated)
-        url_update_date = DateParser.parse(url[1])
+        post_update_date = DateHandler.parse_datetime(datetime=post.updated)
+        url_update_date = DateHandler.parse_datetime(datetime=url[1])
+
+        print(post_update_date)
+        print(url_update_date)
 
         if post_update_date > url_update_date:
             message = "<a href='" + post.link + \
