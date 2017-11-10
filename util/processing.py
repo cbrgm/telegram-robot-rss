@@ -3,7 +3,7 @@
 from telegram.error import (TelegramError, Unauthorized)
 from telegram import ParseMode
 from multiprocessing.dummy import Pool as ThreadPool
-from threading import Thread
+from threading import Thread as RunningThread
 from util.datehandler import DateHandler
 from util.database import DatabaseHandler
 import feedparser
@@ -15,7 +15,7 @@ from time import sleep
 class BatchProcess(threading.Thread):
 
     def __init__(self, database, update_interval, bot):
-        Thread.__init__(self)
+        RunningThread.__init__(self)
         self.db = database
         self.update_interval = float(update_interval)
         self.bot = bot
