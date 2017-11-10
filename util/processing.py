@@ -6,7 +6,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 from threading import Thread as RunningThread
 from util.datehandler import DateHandler
 from util.database import DatabaseHandler
-import feedparser
+from util.feedhandler import FeedHandler
 import datetime
 import threading
 from time import sleep
@@ -53,8 +53,7 @@ class BatchProcess(threading.Thread):
         for user in telegram_users:
             if user[6]:  # is_active
                 try:
-                    news_feed = feedparser.parse(url[0])
-                    for post in news_feed.entries:
+                    for post in FeedHandler.parse_feed(url[0]):
                         self.send_newest_messages(
                             url=url, post=post, telegram_id=user[0])
                 except:
@@ -69,9 +68,6 @@ class BatchProcess(threading.Thread):
     def send_newest_messages(self, url, post, telegram_id):
         post_update_date = DateHandler.parse_datetime(datetime=post.updated)
         url_update_date = DateHandler.parse_datetime(datetime=url[1])
-
-        print(post_update_date)
-        print(url_update_date)
 
         if post_update_date > url_update_date:
             message = "<a href='" + post.link + \

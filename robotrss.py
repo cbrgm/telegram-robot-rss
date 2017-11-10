@@ -6,7 +6,7 @@ from telegram import ParseMode
 from util.filehandler import FileHandler
 from util.database import DatabaseHandler
 from util.processing import BatchProcess
-import feedparser
+from util.feedhandler import FeedHandler
 
 
 class RobotRss(object):
@@ -79,42 +79,38 @@ class RobotRss(object):
         telegram_user = update.message.from_user
 
         if len(args) != 2:
-            message = "Sorry! I could not add the entry! Please use the the command passing the following arguments: /add <url> <entryname> \n\n Here is a short example: \n /add http://www.feedforall.com/sample.xml ExampleEntry"
+            message = "Sorry! I could not add the entry! Please use the the command passing the following arguments:\n\n /add <url> <entryname> \n\n Here is a short example: \n\n /add http://www.feedforall.com/sample.xml ExampleEntry"
             update.message.reply_text(message)
             return
 
+        arg_url = FeedHandler.format_url_string(string=args[0])
+        arg_entry = args[1]
+
         # Check if argument matches url format
-        try:
-            news_feed = feedparser.parse(args[0])
-            if not news_feed.entries:
-                raise Exception('URL not parsable')
-            for post in news_feed.entries:
-                if not hasattr(post, "updated"):
-                    raise Exception('URL not parsable')
-        except:
+        if not FeedHandler.is_parsable(url=arg_url):
             message = "Sorry! It seems like '" + \
-                str(args[0]) + "' doesn't provide an RSS news feed.. Have you tried another URL from that provider? \n\nPlease remember, that I only accept URLs in with format: \nhttp(s)://site.name \nMaybe you gave me a 'www.'..?"
+                str(arg_url) + "' doesn't provide an RSS news feed.. Have you tried another URL from that provider?"
             update.message.reply_text(message)
             return
 
         # Check if entry does not exists
         entries = self.db.get_urls_for_user(telegram_id=telegram_user.id)
 
-        if any(args[0].lower() in entry[0] for entry in entries):
+        if any(arg_url.lower() in arg_url for entry in entries):
             message = "Sorry, " + telegram_user.first_name + \
                 "! I already have that url with stored in your subscriptions."
             update.message.reply_text(message)
             return
 
-        if any(args[1] in entry[1] for entry in entries):
+        if any(arg_entry in arg_entry for entry in entries):
             message = "Sorry! I already have an entry with name " + \
-                args[1] + " stored in your subscriptions.. Please choose another entry name or delete the entry using '/remove " + args[1] + "'"
+                arg_entry + " stored in your subscriptions.. Please choose another entry name or delete the entry using '/remove " + arg_entry + "'"
             update.message.reply_text(message)
             return
 
         self.db.add_user_bookmark(
-            telegram_id=telegram_user.id, url=args[0].lower(), alias=args[1])
-        message = "I added " + args[1] + " to your subscriptions!"
+            telegram_id=telegram_user.id, url=arg_url.lower(), alias=arg_entry)
+        message = "I successfully added " + arg_entry + " to your subscriptions!"
         update.message.reply_text(message)
 
     def remove(self, bot, update, args):
