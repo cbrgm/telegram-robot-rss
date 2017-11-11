@@ -2,6 +2,11 @@
 
 ![RobotRss Logo](logo/text/robotrss_logo_text_512.png)
 
+![Github python](https://img.shields.io/badge/latest_release-1.0.2-lightgrey.svg)
+![Github python](https://img.shields.io/badge/python-2.7-blue.svg)
+[![GitHubissues](https://img.shields.io/github/issues/cbrgm/telegram-robot-rss.svg)](https://github.com/cbrgm/telegram-robot-rss/issues)
+[![GitHub license](https://img.shields.io/badge/telegram-%40RobotRssBot-blue.svg)](https://telegram.me/RobotRssBot)
+
 ## Description
 
 RobotRSS is an RSS Bot for the Telegram Messenger. Subscribe to different news channels and stay up-to-date. Receive instant messages in your Messenger app when websites are updated, e. g. on news pages, blogs or audio/video logs.
