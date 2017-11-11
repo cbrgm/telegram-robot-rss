@@ -5,13 +5,17 @@ import re
 class FeedHandler(object):
 
     @staticmethod
-    def parse_feed(url):
+    def parse_feed(url, entries=0):
         """
         Parses the given url, returns a list containing all available entries
         """
 
-        feed = feedparser.parse(url)
-        return feed.entries
+        if 1 <= entries <= 10:
+            feed = feedparser.parse(url)
+            return feed.entries[:entries]
+        else:
+            feed = feedparser.parse(url)
+            return feed.entries[:4]
 
     @staticmethod
     def is_parsable(url):

@@ -155,7 +155,7 @@ class DatabaseHandler(object):
 
         return result
 
-    def get_all_urls(self, ):
+    def get_all_urls(self):
         conn = sqlite3.connect(self.database_path)
         cursor = conn.cursor()
 
@@ -237,7 +237,7 @@ class DatabaseHandler(object):
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT user.* FROM user, web_user WHERE web_user.telegram_id = user.telegram_id AND web_user.url ='" + str(url) + "';")
+            "SELECT user.*, web_user.alias FROM user, web_user WHERE web_user.telegram_id = user.telegram_id AND web_user.url ='" + str(url) + "';")
         result = cursor.fetchall()
 
         conn.commit()

@@ -55,7 +55,7 @@ class BatchProcess(threading.Thread):
                 try:
                     for post in FeedHandler.parse_feed(url[0]):
                         self.send_newest_messages(
-                            url=url, post=post, telegram_id=user[0])
+                            url=url, post=post, user=user)
                 except:
                     message = "Something went wrong when I tried to parse the URL: \n\n " + \
                         url[0] + "\n\nCould you please check that for me? Remove the url from your subscriptions using the /remove command, it seems like it does not work anymore!"
@@ -65,18 +65,18 @@ class BatchProcess(threading.Thread):
         self.db.update_url(url=url[0], last_updated=str(
             DateHandler.get_datetime_now()))
 
-    def send_newest_messages(self, url, post, telegram_id):
+    def send_newest_messages(self, url, post, user):
         post_update_date = DateHandler.parse_datetime(datetime=post.updated)
         url_update_date = DateHandler.parse_datetime(datetime=url[1])
 
         if post_update_date > url_update_date:
-            message = "<a href='" + post.link + \
+            message = "[" + user[7] + "] <a href='" + post.link + \
                 "'>" + post.title + "</a>"
             try:
                 self.bot.send_message(
-                    chat_id=telegram_id, text=message, parse_mode=ParseMode.HTML)
+                    chat_id=user[0], text=message, parse_mode=ParseMode.HTML)
             except Unauthorized:
-                self.db.update_user(telegram_id=telegram_id, is_active=0)
+                self.db.update_user(telegram_id=user[0], is_active=0)
             except TelegramError:
                 # handle all other telegram related errors
                 pass
