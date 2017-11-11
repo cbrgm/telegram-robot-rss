@@ -22,8 +22,8 @@ RobotRSS has an easy-to-use user interface to get started. Write the **official 
 
 **RSS Management**  
 `/add <url> <entryname>` - Adds a new subscription to your list.  
-`/remove <entryname>` - Removes an exisiting subscription from your list.
-`/get <entryname> [optional: <count 1-10>]` - Manually parses your subscription, sending you the last <count> elements.
+`/remove <entryname>` - Removes an exisiting subscription from your list.  
+`/get <entryname> [optional: <count 1-10>]` - Manually parses your subscription, sending you the last <count> elements.  
 `/list` - Shows all your subscriptions as a list.
 
 **Other**  
