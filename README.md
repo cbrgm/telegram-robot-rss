@@ -6,6 +6,10 @@
 
 RobotRSS is an RSS Bot for the Telegram Messenger. Subscribe to different news channels and stay up-to-date. Receive instant messages in your Messenger app when websites are updated, e. g. on news pages, blogs or audio/video logs.
 
+The latest stable release and release notes can be found [here][ba8097ee].
+
+  [ba8097ee]: https://github.com/cbrgm/telegram-robot-rss/releases "releases"
+
 ### Usage
 
 RobotRSS has an easy-to-use user interface to get started. Write the **official [@RobotRssBot][2f7e3ad7]** via telegram. Use the following commands to manage your subscriptions:
@@ -18,7 +22,8 @@ RobotRSS has an easy-to-use user interface to get started. Write the **official 
 
 **RSS Management**  
 `/add <url> <entryname>` - Adds a new subscription to your list.  
-`/remove <entryname>` - Removes an exisiting subscription from your list.  
+`/remove <entryname>` - Removes an exisiting subscription from your list.
+`/get <entryname> [optional: <count 1-10>]` - Manually parses your subscription, sending you the last <count> elements.
 `/list` - Shows all your subscriptions as a list.
 
 **Other**  
@@ -63,6 +68,16 @@ You can easily install all needed Dependencies using `pip`. Navigate into the pr
 You can easily run RobotRSS inside a Docker Container. The Dockerfile can be found in the project directory. Run `docker build --tag "RobotRSS:latest" .` to create a new Docker Image based on the current code.
 
 You can also pull the latest image from Dockerhub using `docker pull cynthek/RobotRSS:latest`.
+
+To start your docker container use the following commands, passing `BOT_TOKEN` and optional `UPDATE_INTERVAL` environment variable to the container:
+
+```bash
+docker run -itd --name "your-container-name" -e BOT_TOKEN="Enter your token" robotrss:latest
+# or use
+docker run -itd --name "your-container-name" -e BOT_TOKEN="Enter your token" -e UPDATE_INTERVAL=<Number in Minutes> robotrss:latest
+```
+
+`UPDATE_INTERVAL` is set to 300 per default, updating feeds of subscribers every 5 minutes (300 sec).
 
 ## Python Version
 
