@@ -9,6 +9,7 @@ from util.database import DatabaseHandler
 from util.feedhandler import FeedHandler
 import datetime
 import threading
+import traceback
 from time import sleep
 
 
@@ -57,6 +58,7 @@ class BatchProcess(threading.Thread):
                         self.send_newest_messages(
                             url=url, post=post, user=user)
                 except:
+                    traceback.print_exc()
                     message = "Something went wrong when I tried to parse the URL: \n\n " + \
                         url[0] + "\n\nCould you please check that for me? Remove the url from your subscriptions using the /remove command, it seems like it does not work anymore!"
                     self.bot.send_message(
