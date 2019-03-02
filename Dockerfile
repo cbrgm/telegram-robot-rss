@@ -8,4 +8,6 @@ ENV UPDATE_INTERVAL 300
 
 RUN mkdir /workspace/resources/userdata
 RUN pip install -r requirements.txt
+
+VOLUME /workspace/resources
 CMD python .docker/initconfig.py && python robotrss.py
