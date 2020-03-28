@@ -13,7 +13,7 @@ RobotRSS is an RSS Bot for the Telegram Messenger. Subscribe to different news c
 
 The latest stable release and release notes can be found [here][ba8097ee].
 
-  [ba8097ee]: https://github.com/cbrgm/telegram-robot-rss/releases "releases"
+  [ba8097ee]: https://github.com/cbrgm/telegram-robot-rss/releases/latest "releases"
 
 ### Usage
 
