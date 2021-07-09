@@ -54,7 +54,7 @@ The source code of RobotRSS is Open Source and openly accessible and editable. I
 
 First, you must tell RobotRSS which bot the service is allowed to communicate with. Create a new telegram bot or use an existing one. All you need is the Bot's `Token` from Telegram. You can receive one from Telegrams [Botfather][db6676cf].
 
-Edit the `sample-credentials.json` file located at `/resources/sample-credentials.json`.
+Edit the `credentials.json` file located at `/resources/credentials.json`.
 
 ```json
 {
@@ -62,9 +62,6 @@ Edit the `sample-credentials.json` file located at `/resources/sample-credential
   "update_interval": 300
 }
 ```
-
-Insert your token and safe the file as **`credentials.json`** at `/resources/credentials.json`!
-
   [db6676cf]: tg://resolve?domain=BotFather "Botfather"
 
 ### Install Dependencies using pip
