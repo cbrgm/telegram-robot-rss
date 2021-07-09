@@ -232,11 +232,12 @@ if __name__ == '__main__':
     credentials = fh.load_json("resources/credentials.json")
 
     if 'BOT_TOKEN' in os.environ:
-        token = os.environ.get("BOT_TOKEN")
+        token = os.environ.get('BOT_TOKEN')
     else:
         token = credentials["telegram_token"]
     if 'UPDATE_INTERVAL' in os.environ:
         update = int(os.environ.get("UPDATE_INTERVAL", 300))
     else:
         update = credentials["update_interval"]
+
     RobotRss(telegram_token=token, update_interval=update)
