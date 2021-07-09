@@ -15,6 +15,9 @@ The latest stable release and release notes can be found [here][ba8097ee].
 
   [ba8097ee]: https://github.com/cbrgm/telegram-robot-rss/releases/latest "releases"
 
+### Deploy to Heroku:
+<p align="left"><a href="https://heroku.com/deploy"> <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku" /></a></p>
+
 ### Usage
 
 RobotRSS has an easy-to-use user interface to get started. Write the **official [@RobotRssBot][2f7e3ad7]** via telegram. Use the following commands to manage your subscriptions:
