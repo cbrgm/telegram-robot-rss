@@ -98,7 +98,7 @@ class RobotRss(object):
         entries = self.db.get_urls_for_user(telegram_id=telegram_user.id)
         print(entries)
 
-        if any(arg_url.lower() in entry for entry in entries):
+        if any(arg_url in entry for entry in entries):
             message = "Sorry, " + telegram_user.first_name + \
                 "! I already have that url with stored in your subscriptions."
             update.message.reply_text(message)
@@ -111,7 +111,7 @@ class RobotRss(object):
             return
 
         self.db.add_user_bookmark(
-            telegram_id=telegram_user.id, url=arg_url.lower(), alias=arg_entry)
+            telegram_id=telegram_user.id, url=arg_url, alias=arg_entry)
         message = "I successfully added " + arg_entry + " to your subscriptions!"
         update.message.reply_text(message)
 
