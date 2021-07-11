@@ -7,7 +7,7 @@ from util.filehandler import FileHandler
 from util.database import DatabaseHandler
 from util.processing import BatchProcess
 from util.feedhandler import FeedHandler
-
+import os
 
 class RobotRss(object):
 
@@ -231,7 +231,13 @@ if __name__ == '__main__':
     fh = FileHandler("..")
     credentials = fh.load_json("resources/credentials.json")
 
-    # Pass Credentials to bot
-    token = credentials["telegram_token"]
-    update = credentials["update_interval"]
+    if 'BOT_TOKEN' in os.environ:
+        token = os.environ.get("BOT_TOKEN")
+    else:
+        token = credentials["telegram_token"]
+    if 'UPDATE_INTERVAL' in os.environ:
+        update = int(os.environ.get("UPDATE_INTERVAL", 300))
+    else:
+        update = credentials["update_interval"]
+
     RobotRss(telegram_token=token, update_interval=update)

@@ -15,6 +15,9 @@ The latest stable release and release notes can be found [here][ba8097ee].
 
   [ba8097ee]: https://github.com/cbrgm/telegram-robot-rss/releases/latest "releases"
 
+### Deploy to Heroku:
+<p align="left"><a href="https://heroku.com/deploy"> <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku" /></a></p>
+
 ### Usage
 
 RobotRSS has an easy-to-use user interface to get started. Write the **official [@RobotRssBot][2f7e3ad7]** via telegram. Use the following commands to manage your subscriptions:
@@ -51,7 +54,7 @@ The source code of RobotRSS is Open Source and openly accessible and editable. I
 
 First, you must tell RobotRSS which bot the service is allowed to communicate with. Create a new telegram bot or use an existing one. All you need is the Bot's `Token` from Telegram. You can receive one from Telegrams [Botfather][db6676cf].
 
-Edit the `sample-credentials.json` file located at `/resources/sample-credentials.json`.
+Edit the `credentials.json` file located at `/resources/credentials.json`.
 
 ```json
 {
@@ -59,9 +62,6 @@ Edit the `sample-credentials.json` file located at `/resources/sample-credential
   "update_interval": 300
 }
 ```
-
-Insert your token and safe the file as **`credentials.json`** at `/resources/credentials.json`!
-
   [db6676cf]: tg://resolve?domain=BotFather "Botfather"
 
 ### Install Dependencies using pip
